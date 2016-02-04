@@ -1,0 +1,200 @@
+<!--
+~ [y] hybris Platform
+~
+~ Copyright (c) 2000-2015 hybris AG
+~ All rights reserved.
+~
+~ This software is the confidential and proprietary information of hybris
+~ ("Confidential Information"). You shall not disclose such Confidential
+~ Information and shall use it only in accordance with the terms of the
+~ license agreement you entered into with hybris.
+-->
+<div class="account">
+  <section class="white" ng-cloak>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="page-headline hidden-xs">
+            <h1>
+              <small>{{'MY_ACCOUNT' | translate}}</small>
+	             <span class="welcomeTxt pull-left">{{'WELCOME' | translate}} <span ng-if="account.firstName">{{account.firstName}}</span></span> <img src="./img/user-icon_big.png" class="img-circle pull-left "/>
+            </h1>
+       </div>
+       <div class="page-headline mobile hidden-sm hidden-md hidden-lg">
+          <h1>
+              <small>{{'MY_ACCOUNT' | translate}}</small>
+              <div>
+                <img src="./img/user-icon_big.png" class="img-circle"/>
+              </div>
+	            <span class="welcomeTxt pull-left">{{'WELCOME' | translate}} <span ng-if="account.firstName">{{account.firstName}}</span></span>
+            </h1>
+       </div>
+      </div>
+
+      <!-- desktop display -->
+      <div class="row userInfoRow hidden-xs desktopUserInfo" ng-if="account">
+
+        <div class="col-sm-1 editLinkContainer">
+            <a ng-click="editAccountInfo('user')"><span id="edit-user-info" class="glyphicon glyphicon-pencil"></span></a>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <span class="dataLabel">{{'NAME' | translate}}</span>
+            {{account.firstName}} {{account.middleName}} {{account.lastName}}
+        </div>
+          <div class="col-sm-1 editLinkContainer">
+              <a ng-click="editAccountInfo('email')"><span class="glyphicon glyphicon-pencil"></span></a>
+          </div>
+          <div class="col-sm-3">
+              <span class="dataLabel">{{'EMAIL' | translate}}</span>
+              {{account.contactEmail}}
+          </div>
+
+          <div class="col-sm-1 editLinkContainer">
+              <a ng-click="updatePassword()"><span id="update-password" class="glyphicon glyphicon-pencil"></span></a>
+          </div>
+          <div class="col-sm-3">
+              <span class="dataLabel">{{'PASSWORD' | translate}}</span>
+              &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
+          </div>
+      </div>
+      <!-- /desktop -->
+
+      <!-- mobile display -->
+      <div class="row userInfoRow mobile hidden-sm hidden-md hidden-lg" ng-if="account">
+
+          <div class="col-xs-12">
+            <span class="titleRow visible-xs hidden-md hidden-lg">
+                {{'ACCOUNT_DETAILS' | translate}}
+              </span>
+          </div>
+          <div class="col-xs-8">
+              <div class="mobileDataSection">
+                <span class="dataLabel locale">{{'NAME' | translate}}</span>
+                {{account.firstName}} {{account.middleName}} {{account.lastName}}
+              </div>
+          </div>
+          <div class="col-xs-4">
+              <button class="btn btn-secondary btn-md pull-right" ng-click="editAccountInfo('user')">{{'EDIT' | translate}}</button>
+          </div>
+          <div class="col-xs-8">
+            <div class="mobileDataSection">
+              <span class="dataLabel locale">{{'EMAIL' | translate}}</span>
+              {{showLanguageLocale()}}
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <button class="btn btn-secondary btn-md pull-right" ng-click="editAccountInfo('email')">{{'EDIT' | translate}}</button>
+          </div>
+          <div class="col-xs-8">
+            <div class="mobileDataSection">
+              <span class="dataLabel">{{'PASSWORD' | translate}}</span>
+              &#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;
+            </div>
+          </div>
+          <div class="col-xs-4">
+            <button class="btn btn-secondary btn-md pull-right" ng-click="updatePassword()">{{'EDIT' | translate}}</button>
+          </div>
+
+      </div>
+      <!-- /mobile display -->
+      <div>
+        <p ng-if="!account">{{'FAIL_CUSTOMER_DETAILS' | translate}}</p>
+      </div>
+
+
+    </div>
+  </section>
+  <section class="lightgray" ng-cloak>
+    <div class="container-fluid">
+      <div class="row">
+          <div class="col-xs-12">
+            <div class="section-headline clearfix">
+              <h2 class="pull-left">{{'ADDRESSBOOK' | translate}}</h2>
+              <button id="add-address-btn" class="btn btn-secondary btn-md pull-right" ng-click="openAddressModal()">
+              {{'ADD' | translate}}
+              </button>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div ng-include="'./js/app/account/templates/addresses.html'"></div>
+      </div>
+
+      <div class="text-center" ng-if="showAddressButtons">
+        <button class="btn btn-link" ng-show="showAllAddressButton" ng-click="showAllAddresses()">{{'SHOW_ALL' | translate}} <span class="glyphicon glyphicon-chevron-down"/></button>
+        <button class="btn btn-link" ng-show="!showAllAddressButton" ng-click="showAllAddresses()">{{'SHOW_LESS' | translate}} <span class="glyphicon glyphicon-chevron-up"/></button>
+      </div>
+    </div>
+  </section>
+  <section class="mediumgray" ng-cloak>
+    <div class="container-fluid">
+      <div class="section-headline clearfix">
+        <h2>{{'ORDER_HISTORY' | translate}}</h2>
+      </div>
+
+      <div class="hidden-md hidden-lg row">
+        <div ng-repeat="m_order in orders | limitTo: showOrdersFilter" class="col-sm-4 col-xs-12 orderHistoryCard" ng-class="{'green': order.status == 'CREATED' || order.status == 'CONFIRMED' || order.status == 'SHIPPED', 'red':  order.status == 'DECLINED', 'blue': order.status == 'COMPLETED' }">
+            <div class="cardStatusIdentifier pull-left" ></div>
+            <div class="panel">
+                <div class="panel-body " >
+                    <div class="row">
+                        <div class="col-sm-8 col-xs-8 leftCol">
+                            <p>
+                              <strong>{{'PLACED_AT'|translate}}</strong></br>
+                              {{m_order.created | date: 'medium'}}
+                            </p>
+                            <p>
+                                <strong>{{'ORDER_NUMBER'|translate}}</strong></br>
+                                <a ui-sref="base.orderDetail({orderId: m_order.id})">{{m_order.id}}</a>
+                            </p>
+                            <p>
+                                <strong>{{'ITEMS_IN_ORDER'|translate}}</strong></br>
+                                <td>{{m_order.entries|sumByKey:'amount'|showNoOfItems}}</td>
+                            </p>
+                            <p>{{m_order.totalPrice | currency: m_order.currencySymbol}}</p>
+                        </div>
+                        <div class="col-sm-4 col-xs-4">
+                          <p><strong>{{m_order.status}}</strong></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div ng-if="orders.length"  class="table-responsive hidden-sm hidden-xs">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>{{'DATE' | translate}}</th>
+              <th>{{'ORDER_NUMBER' | translate}}</th>
+              <th>{{'ITEMS_IN_ORDER' | translate}}</ht>
+              <th>{{'ORDER_TOTAL' | translate}}</th>
+              <th>{{'ORDER_STATUS' | translate}}</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr ng-repeat="xrder in orders | limitTo: showOrdersFilter ">
+                  <td>{{xrder.created | date: 'medium'}}</td>
+                  <td><a ui-sref="base.orderDetail({orderId: xrder.id})">{{xrder.id}}</a></td>
+                  <td>{{xrder.entries|sumByKey:'amount'|showNoOfItems}}</td>
+                  <td>{{xrder.totalPrice | currency: xrder.currencySymbol}}</td>
+                  <td><strong>{{xrder.status}}</strong></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p ng-if="!orders.length && orders.headers">{{'NO_ORDERS' | translate}}</p>
+      <p ng-if="!orders.length && !orders.headers">{{'FAIL_ORDER' | translate}}</p>
+
+      <div class="text-center" ng-if="showOrderButtons">
+        <button class="btn btn-link" ng-show="showAllOrdersButton" ng-click="showAllOrders()">{{'SHOW_ALL' | translate}} <span class="glyphicon glyphicon-chevron-down"/></button>
+        <button class="btn btn-link" ng-show="!showAllOrdersButton" ng-click="showAllOrders()">{{'SHOW_LESS' | translate}} <span class="glyphicon glyphicon-chevron-up"/></button>
+      </div>
+
+      
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,40 @@
+<div class="container" ng-controller="ProductComparisonCtrl">
+	<div class="row">
+		<div class="col-md-4">
+			<ul class="list-group">
+				<li class="list-group-item" ng-class="selectedCategoryId === 'All' ? 'active' : ''" ng-click="setSelectedCategory('All')">All</li>
+				<li class="list-group-item" ng-class="category.id === selectedCategoryId ? 'active' : ''" ng-repeat="category in categories" ng-click="setSelectedCategory(category.id);">
+					{{category.name}}
+				</li>
+			</ul>
+		</div>
+		<div class="col-md-8">
+			<table class="table">
+				<thead>
+					<tr>
+						<th></th>
+						<th ng-repeat="product in products" class="text-center">{{product.name}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th></th>
+						<th ng-repeat="product in products">
+							<img src="{{product.media_url}}" class="img img-responsive">
+						</th>
+					</tr>
+					<tr>
+						<th>Price</th>
+						<th ng-repeat="product in products">
+							{{product.price}}
+						</th>
+					</tr>
+					<tr ng-repeat="mixin in mixins">
+						<td>{{mixin.key}}</td>
+						<th ng-repeat="product in products">{{getProductMixinValue(product, mixin.key)}}</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
