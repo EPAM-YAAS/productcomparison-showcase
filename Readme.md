@@ -5,8 +5,7 @@ This repo exposes usage of [EPAM's Product Comparison](https://github.com/EPAM-Y
 
 ## Installation
 
-The following steps will demonstrate how to install and run the code on localhost.  At the end, you will be able to browse and "shop" in 
-a pre-configured store.  Feel free to take items through checkout, using any Stripe test credit card number (https://stripe.com/docs/testing).
+The following steps will demonstrate how to install and run the code on localhost. 
 
 ###  1. System requirements
 
